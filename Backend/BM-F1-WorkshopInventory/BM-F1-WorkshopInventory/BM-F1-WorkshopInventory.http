@@ -1,0 +1,6 @@
+@BM_F1_WorkshopInventory_HostAddress = http://localhost:5014
+
+GET {{BM_F1_WorkshopInventory_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
