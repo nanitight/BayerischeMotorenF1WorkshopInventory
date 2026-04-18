@@ -53,3 +53,4 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 Backend/BM-F1-WorkshopInventory/.vs
+*.env
