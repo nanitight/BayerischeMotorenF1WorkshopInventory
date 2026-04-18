@@ -35,10 +35,16 @@ namespace BM_F1_WorkshopInventory.Services
             {
                 throw new UserErrorException("Password is incorrect.");
             }
+            try
+            {
+                var token = CreateToken(userDb);
 
-            var token = CreateToken(userDb);
-
-            return token;
+                return token;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<User?> RegisterAsync(UserDTO user)
@@ -68,7 +74,9 @@ namespace BM_F1_WorkshopInventory.Services
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
+            var secretToken = Environment.GetEnvironmentVariable("TOKEN");
+            if (secretToken == null) throw new Exception("Token not in env files");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretToken));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 

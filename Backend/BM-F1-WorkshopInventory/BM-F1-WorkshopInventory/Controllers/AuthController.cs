@@ -1,6 +1,7 @@
 ﻿using BM_F1_WorkshopInventory.Interfaces;
 using BM_F1_WorkshopInventory.Models.DTO;
 using BM_F1_WorkshopInventory.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,11 @@ namespace BM_F1_WorkshopInventory.Controllers
             }
         }
 
-       
+        [Authorize]
+        [HttpGet("authed")]
+        public ActionResult<string> Test()
+        {
+            return "Authed";
+        }
     }
 }
