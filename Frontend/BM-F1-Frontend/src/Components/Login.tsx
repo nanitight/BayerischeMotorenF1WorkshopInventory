@@ -44,24 +44,26 @@ export default function Login() {
     
 
   return (
-    <div className="flex items-center justify-center ">
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 max-w-md'>
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-            <legend className="fieldset-legend">Login</legend>
+    <div className='h-screen' style={{backgroundImage:"url(https://primotipo.com/wp-content/uploads/2015/04/image19.jpg)"}}>
+        <div className="flex items-center justify-center " >
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 max-w-md'>
+                <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+                <legend className="fieldset-legend">Login</legend>
 
-            <label className="label">Username</label>
-            <input type="text" className="input " placeholder="Username" {...register("Username")} />
-            {errors.Username && <p className='text-red-500'>{errors.Username.message}</p>}
+                <label className="label">Username</label>
+                <input type="text" className="input " placeholder="Username" {...register("Username")} />
+                {errors.Username && <p className='text-red-500'>{errors.Username.message}</p>}
 
-            <label className="label">Password</label>
-            <input type="password" className="input" placeholder="Password" {...register("Password")}/>
-            {errors.Password && <p className='text-red-500'>{errors.Password.message}</p>}
+                <label className="label">Password</label>
+                <input type="password" className="input" placeholder="Password" {...register("Password")}/>
+                {errors.Password && <p className='text-red-500'>{errors.Password.message}</p>}
 
-            <button className="btn btn-neutral mt-4" type='submit'>Login</button> 
-            {errorMsg.length > 0 ? <p className='text-red-300'>{errorMsg}</p> : ""}
-            <Link to='/register' className="btn btn-neutral mt-4">Register</Link>
-            </fieldset>
-        </form>
+                <button className="btn btn-neutral mt-4" type='submit'>Login</button> 
+                {errorMsg.length > 0 ? <p className='text-red-300'>{errorMsg}</p> : ""}
+                <Link to='/register' className="btn btn-neutral mt-4">Register</Link>
+                </fieldset>
+            </form>
+        </div>
     </div>
   )
 }
