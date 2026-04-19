@@ -22,7 +22,7 @@ namespace BM_F1_WorkshopInventory.Services
             this.context = context;
             this.configuration = configuration;
         }
-        public async Task<string?> LoginAsync(UserDTO user)
+        public async Task<UserLogInDTO?> LoginAsync(UserDTO user)
         {
             var userDb = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
 
@@ -38,7 +38,7 @@ namespace BM_F1_WorkshopInventory.Services
             {
                 var token = CreateToken(userDb);
 
-                return token;
+                return new UserLogInDTO(userDb.Id.ToString(),userDb.Username,userDb.Role,token);
             }
             catch
             {

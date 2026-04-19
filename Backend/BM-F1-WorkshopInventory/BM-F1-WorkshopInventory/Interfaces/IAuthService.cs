@@ -7,6 +7,6 @@ namespace BM_F1_WorkshopInventory.Interfaces
     {
         Task<User?> RegisterAsync(UserDTO user);
 
-        Task<string?> LoginAsync(UserDTO user);
+        Task<UserLogInDTO?> LoginAsync(UserDTO user);
     }
 }

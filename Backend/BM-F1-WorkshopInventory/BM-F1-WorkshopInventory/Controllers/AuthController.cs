@@ -1,6 +1,7 @@
 ﻿using BM_F1_WorkshopInventory.Interfaces;
 using BM_F1_WorkshopInventory.Models.DTO;
 using BM_F1_WorkshopInventory.Models.Entities;
+using BM_F1_WorkshopInventory.Models.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -36,17 +37,21 @@ namespace BM_F1_WorkshopInventory.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDTO req)
+        public async Task<ActionResult<UserLogInDTO>> Login(UserDTO req)
         {
             try
             {
-                var token = await service.LoginAsync(req);
-                if (token == null) return BadRequest("Invalid username or password.");
-                return Ok(token);
+                var loggedInUser = await service.LoginAsync(req);
+                if (loggedInUser == null) return BadRequest("Invalid username or password.");
+                return Ok(loggedInUser);
+            }
+            catch(UserErrorException )
+            {
+                return BadRequest("Invalid username or password.");
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message);
+                return Problem(e.Message);
             }
         }
 

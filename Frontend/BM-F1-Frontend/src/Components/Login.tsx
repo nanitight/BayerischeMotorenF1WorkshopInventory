@@ -1,22 +1,35 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, redirect, useNavigate } from 'react-router-dom'
 import { userSchema, type LoginUser } from '../Interfaces/UserSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppContext } from './Reusable/AppContext';
 import axios from 'axios';
+import { useState } from 'react';
+import type { LoggedInUser } from '../Interfaces/default';
 
 export default function Login() {
     const {url,setLoggedInUser} = useAppContext() ;
+    const navigate = useNavigate()
     const {register,handleSubmit,formState : {errors}, } = useForm<LoginUser>({resolver: zodResolver(userSchema),});
+    const [errorMsg, setErrorMsg] = useState("") ;
     const onSubmit = async (user: LoginUser) => {
         console.log("user: ",user) ;
         console.log("fetching...") ;
         try{
             const resp = await axios.post(`${url}/api/auth/login`,user) ;
             console.log(resp) ;
+            if (resp.data){
+
+                const logged : LoggedInUser = resp.data as LoggedInUser ;
+                console.log("extract", logged) ;
+                setLoggedInUser(logged)
+                navigate("/dashboard");
+
+            }
         }
         catch(err){
             if (err.response){
+                setErrorMsg(err.response.data) ;
                 console.log("error occ: ", err.response.data);
                 console.log("error occ: ", err.response.status);
 
@@ -44,7 +57,8 @@ export default function Login() {
             <input type="password" className="input" placeholder="Password" {...register("Password")}/>
             {errors.Password && <p className='text-red-500'>{errors.Password.message}</p>}
 
-            <button className="btn btn-neutral mt-4" type='submit'>Login</button>
+            <button className="btn btn-neutral mt-4" type='submit'>Login</button> 
+            {errorMsg.length > 0 ? <p className='text-red-300'>{errorMsg}</p> : ""}
             <Link to='/register' className="btn btn-neutral mt-4">Register</Link>
             </fieldset>
         </form>
