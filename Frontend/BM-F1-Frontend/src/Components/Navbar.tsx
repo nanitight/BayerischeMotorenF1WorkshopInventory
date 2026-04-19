@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { useAppContext } from './Reusable/AppContext'
 
 export default function Navbar() {
+
+    const {} = useAppContext() ;
+
   return (
     <div>
         <div className="navbar bg-base-100 shadow-sm">
