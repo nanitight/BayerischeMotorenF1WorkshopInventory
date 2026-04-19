@@ -71,6 +71,7 @@ namespace BM_F1_WorkshopInventory.Services
             {
                 new Claim(ClaimTypes.Name,user.Username),
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Role,user.Role),
             };
 
             var secretToken = Environment.GetEnvironmentVariable("TOKEN");
