@@ -8,5 +8,6 @@ namespace BM_F1_WorkshopInventory.Data
         public BMF1DbContext(DbContextOptions<BMF1DbContext> options) : base(options){ }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<GrandPrixResult> GrandPrixResult { get; set; }
     }
 }

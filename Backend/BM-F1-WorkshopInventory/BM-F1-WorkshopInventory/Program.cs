@@ -3,8 +3,9 @@ using BM_F1_WorkshopInventory.Interfaces;
 using BM_F1_WorkshopInventory.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,29 @@ DotNetEnv.Env.Load();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", securityScheme:
+        new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Description = "Enter the login token",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
+        });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+  {
+    {
+      new OpenApiSecurityScheme
+      {
+        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearer" }
+      },
+      new string[] {}
+    }
+  });
+
+});
 
 var dBConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 var signingKey = Environment.GetEnvironmentVariable("TOKEN");
