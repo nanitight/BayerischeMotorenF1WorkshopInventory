@@ -15,3 +15,5 @@ export const grandPrixResultSchema = z.object({
                     .max(10,"Only 10 teams can participate."),
 
 })
+
+export type GrandPrixResultZod = z.infer<typeof grandPrixResultSchema> ;

@@ -10,5 +10,9 @@ export interface LoggedInUser extends User {
 export interface AppContext{
     url : string ,
     loggedInUser : LoggedInUser,
-    setLoggedInUser : (user: LoggedInUser) => void
+    setLoggedInUser : (user: LoggedInUser) => void,
+    loading:boolean,
+    setLoading: (x:boolean)=>void,
+    errorMsg:string,
+    setErrorMsg:(m:string)=>void
 }

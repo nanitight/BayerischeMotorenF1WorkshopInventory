@@ -7,10 +7,8 @@ import { Link } from 'react-router-dom';
 
 export default function ResultsDashboard() {
 
-    const {url,loggedInUser} = useAppContext() ;
+    const {url,loggedInUser,setLoading,loading,errorMsg,setErrorMsg} = useAppContext() ;
     const [results, setResults] = useState<GrandPrixResult[]>( [] as GrandPrixResult[])
-    const [errorMsg, setErrorMsg] = useState<string>("")
-    const [loading, setLoading] = useState(false) ;
     
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -76,9 +74,9 @@ export default function ResultsDashboard() {
                     </tr>
                     </thead>
                     <tbody>            
-                        {results.map((r : GrandPrixResult)=> (
+                        {results.map((r : GrandPrixResult, ind : number)=> (
                             
-                            <ResultsTable result={r}/>
+                            <ResultsTable key={ind} result={r}/>
                         ))}
                     </tbody>
                 </table>
