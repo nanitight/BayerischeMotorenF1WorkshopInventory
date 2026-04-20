@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
             <p className="mb-1">
               Through everyday racing, we aim to improve, and learn from mistakes... 
             </p>
-            <button className="btn btn-primary">View Results</button>
+            <Link to="/dashboard" className="btn btn-primary">View Results</Link>
           </div>
         </div>
       </div>

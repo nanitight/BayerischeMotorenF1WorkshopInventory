@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
 
-        public DateTime RaceDay {get; set ;}
+        public DateOnly RaceDay {get; set ;}
 
         public string Location { get; set; } = "Silverstone";
 

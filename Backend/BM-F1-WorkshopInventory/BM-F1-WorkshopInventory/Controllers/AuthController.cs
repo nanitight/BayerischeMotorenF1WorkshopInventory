@@ -43,7 +43,7 @@ namespace BM_F1_WorkshopInventory.Controllers
             {
                 var loggedInUser = await service.LoginAsync(req);
                 if (loggedInUser == null) return BadRequest("Invalid username or password.");
-                return Ok(loggedInUser);
+                    return Ok(loggedInUser);
             }
             catch(UserErrorException )
             {

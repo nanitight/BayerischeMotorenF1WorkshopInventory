@@ -1,10 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { useAppContext } from './Reusable/AppContext'
+import type { LoggedInUser } from '../Interfaces/default';
 
 export default function Navbar() {
 
-    const {} = useAppContext() ;
+    const {loggedInUser,setLoggedInUser} = useAppContext() ;
+
+    const logOut = () => { 
+        setLoggedInUser({} as LoggedInUser) ;
+    }
 
   return (
     <div>
@@ -34,14 +39,26 @@ export default function Navbar() {
             <ul
             tabIndex={-1}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li>
-                <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-                </a>
-            </li>
-            <li><a>Settings</a></li>
-            <li><a>Logout</a></li>
+                {
+                    /* If logged in , show profile, settings, and logout else, show login link */
+                    loggedInUser.token != null && loggedInUser.token.length > 0 ? 
+                        <>
+                            <li>
+                                <a className="justify-between">
+                                Profile
+                                <span className="badge">New</span>
+                                </a>
+                            </li>
+                            <li><a>Settings</a></li>
+                            <li><a onClick={logOut}>Logout</a></li>
+                        </>
+                    :
+                        <>
+                            <li>
+                                <Link to="/login"> Login</Link>
+                            </li>
+                        </>
+                }
             </ul>
         </div>
         </div>

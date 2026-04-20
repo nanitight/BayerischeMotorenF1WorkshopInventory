@@ -5,6 +5,8 @@ import Home from './Components/Home'
 import ResultsDashboard from './Components/ResultsDashboard'
 import Login from './Components/Login'  
 import NotFoundPage from './Components/Reusable/NotFoundPage'
+import ProtectedRoute from './Components/Reusable/ProtectedRoute'
+import AddGrandPrixResult from './Components/AddGrandPrixResult'
 
 function App() {
 
@@ -16,7 +18,13 @@ function App() {
 
           <Route path="/" element={<Home />}/>
           <Route path="/login" element={<Login />}/>
-          <Route path="/dashboard" element={<ResultsDashboard />}/>
+
+          <Route element={<ProtectedRoute />} >
+            <Route path="/dashboard" element={<ResultsDashboard />}/>
+            <Route path="/register" element={<ResultsDashboard />}/>
+            <Route path="/addresult" element={<AddGrandPrixResult />}/>
+
+          </Route>
           
           <Route path="*" element={<NotFoundPage />}/>
 
