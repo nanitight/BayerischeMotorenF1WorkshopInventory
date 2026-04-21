@@ -1,20 +1,33 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { grandPrixResultSchema, type GrandPrixResultZod } from '../../Interfaces/GrandPrixResultSchema';
+import type { DbTrackedGrandPrixResult } from '../../Interfaces/GrandPrixResult';
 
 interface ReUseForm{
+    
     submitFunc: (res: GrandPrixResultZod) => Promise<void>
+    defaultResult: DbTrackedGrandPrixResult | null
 }
 
-export default function GrandPrixResultForm({submitFunc}:ReUseForm) {
+export default function GrandPrixResultForm({submitFunc, defaultResult}:ReUseForm) {
+    // console.log("start, ",defaultResult);
      const {register,handleSubmit, formState : {errors}} = useForm<GrandPrixResultZod>({
-        resolver  : zodResolver(grandPrixResultSchema), defaultValues : {
-            PointsScored : 0.0 ,
-            PositionInTeamGrid:10, 
-            RaceDay: new Date(), //.,
-            Location: ""
+        resolver  : zodResolver(grandPrixResultSchema), defaultValues : defaultResult ?  
+        {
+            PointsScored :defaultResult.pointsScored,
+            PositionInTeamGrid:defaultResult.positionInTeamGrid, 
+            RaceDay: new Date(defaultResult.raceDay),
+            Location: defaultResult.location
 
-        }}) ;
+        }
+        :{
+                PointsScored : 0.0 ,
+                PositionInTeamGrid:10, 
+                RaceDay: new Date(), //.,
+                Location: ""
+
+            }
+        }) ;
   return (
     <form onSubmit={handleSubmit(submitFunc)}>
         <label className='input '>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { type AppContext, type LoggedInUser} from "../../Interfaces/default";
+import type { DbTrackedGrandPrixResult } from "../../Interfaces/GrandPrixResult";
 
 
 const AppContext = createContext<AppContext | undefined>(undefined) ;
@@ -9,10 +10,11 @@ export const AppContextProvider : React.FC<{ children: React.ReactNode }> = ({ch
     const [loggedInUser,setLoggedInUser] = useState<LoggedInUser>({} as LoggedInUser) ;
     const [loading, setLoading] = useState(false) ;
     const [errorMsg, setErrorMsg] = useState<string>("")
+    const [resultToEdit, setResultToEdit] = useState<DbTrackedGrandPrixResult>({} as DbTrackedGrandPrixResult  )
     
     return (
         <AppContext.Provider value={{
-            url, loggedInUser, setLoggedInUser,loading,setLoading,errorMsg,setErrorMsg
+            url, loggedInUser, setLoggedInUser,loading,setLoading,errorMsg,setErrorMsg,resultToEdit,setResultToEdit
         }} >
             {children}
         </AppContext.Provider>

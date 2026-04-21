@@ -1,17 +1,18 @@
 import { type GrandPrixResultZod } from '../Interfaces/GrandPrixResultSchema'
 import axios from 'axios';
 import { useAppContext } from './Reusable/AppContext';
-import { useNavigate } from 'react-router-dom';
-import type { GrandPrixResult } from '../Interfaces/GrandPrixResult';
+import { Navigate, useNavigate } from 'react-router-dom';
+import type { DbTrackedGrandPrixResult, GrandPrixResult } from '../Interfaces/GrandPrixResult';
 import GrandPrixResultForm from './Reusable/GrandPrixResultForm';
 
 
-export default function AddGrandPrixResult() {
+export default function EditGrandPrixResult() {
    
-    const {url,loggedInUser,loading,setLoading,setErrorMsg,} = useAppContext() ;
+    const {url,loggedInUser,loading,setLoading,setErrorMsg,resultToEdit} = useAppContext() ;
     const navigate = useNavigate() ;
 
-    const onSubmitFunc = async (res: GrandPrixResultZod) =>{
+    const onSubmitEditFunc = async (res: GrandPrixResultZod) =>{
+
         const dataToPost : GrandPrixResult = {
             raceDay: res.RaceDay.toISOString().split('T')[0],
             location: res.Location,
@@ -23,7 +24,7 @@ export default function AddGrandPrixResult() {
         console.log("posting...",res,dataToPost ) ;
         setLoading(true);
         try{
-            const resp = await axios.post(`${url}/api/GrandPrixResults/Create`,dataToPost,{
+            const resp = await axios.post(`${url}/api/GrandPrixResults/Edit/${resultToEdit.id}`,dataToPost,{
                 headers : { Authorization : `Bearer ${loggedInUser.token}`, "Content-Type":"application/json"},
 
             }) ;
@@ -54,13 +55,18 @@ export default function AddGrandPrixResult() {
             <span className="loading loading-infinity loading-xl"></span>
         </>)
 
+    if (resultToEdit == null || resultToEdit.id == null  )
+        return(
+            <Navigate to={"/dashboard"} />
+        )
+
   return (
     
     <div className='flex items-center justify-center mt-5'>
         <div className="card card-border bg-base-100 w-96">
             <div className="card-body">
-                <h2 className="card-title">Add Race Result</h2>
-                <GrandPrixResultForm defaultResult={null} submitFunc={onSubmitFunc} />
+                <h2 className="card-title">Edit Race Result</h2>
+                <GrandPrixResultForm defaultResult={resultToEdit} submitFunc={onSubmitEditFunc} />
             </div>
         </div>
     </div>
