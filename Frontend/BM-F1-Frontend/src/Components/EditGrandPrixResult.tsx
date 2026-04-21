@@ -24,7 +24,7 @@ export default function EditGrandPrixResult() {
         console.log("posting...",res,dataToPost ) ;
         setLoading(true);
         try{
-            const resp = await axios.post(`${url}/api/GrandPrixResults/Edit/${resultToEdit.id}`,dataToPost,{
+            const resp = await axios.put(`${url}/api/GrandPrixResults/Edit/${resultToEdit.id}`,dataToPost,{
                 headers : { Authorization : `Bearer ${loggedInUser.token}`, "Content-Type":"application/json"},
 
             }) ;
