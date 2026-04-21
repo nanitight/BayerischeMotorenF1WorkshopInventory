@@ -18,3 +18,8 @@ Users can sign up/log in, view inventory, add new results, edit/update race resu
 ### Backend
 -  .Net version 8 
 - The app uses secret keys. This can be provided upon request: ntpnaane@gmail.com. 
+
+## Pictures / Reel
+
+- ![Preview](https://github.com/nanitight/BayerischeMotorenF1WorkshopInventory/blob/main/Frontend/BM-F1-Frontend/public/Login%201.gif)
+- ![Preview](https://github.com/nanitight/BayerischeMotorenF1WorkshopInventory/blob/main/Frontend/BM-F1-Frontend/public/Add%20Res.gif)
