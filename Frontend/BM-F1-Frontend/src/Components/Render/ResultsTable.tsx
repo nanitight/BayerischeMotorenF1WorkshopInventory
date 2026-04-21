@@ -1,12 +1,12 @@
-import React from 'react'
-import type { GrandPrixResult } from '../../Interfaces/GrandPrixResult'
+import type { DbTrackedGrandPrixResult,  } from '../../Interfaces/GrandPrixResult'
 
 interface ResultTableProps{
-result : GrandPrixResult
+result : DbTrackedGrandPrixResult, 
+deleteFunc : (id:string)=>Promise<void>
 }
 
 export default function  ResultsTable({
-    result
+    result,deleteFunc
 } : ResultTableProps) {
   return (
      <tr className="hover:bg-base-300">
@@ -22,7 +22,7 @@ export default function  ResultsTable({
                 </label>
             </button>
             
-            <button  className="btn btn-sm btn-ghost tooltip text-error" data-tip="Delete Item">
+            <button onClick={async ()=> await deleteFunc(result.id)} className="btn btn-sm btn-ghost tooltip text-error" data-tip="Delete Item">
                 <label>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0-.91-6.75m1.527-6.524 5.22-.647 1.696.182-5.22.647M6.88 12l.74 4.5M6 9h12" /></svg>
                 </label>
