@@ -4,6 +4,8 @@ Users can sign up/log in, view inventory, add new results, edit/update race resu
 
 ### Notes
  - C ✅ . R ✅ . U ✅ . D ✅
+ - Tailwindcss and daisyUi - used for styling 
+ - Zod - used for form validation and type verification. 
 
 ## Set up
 ### Frontend
