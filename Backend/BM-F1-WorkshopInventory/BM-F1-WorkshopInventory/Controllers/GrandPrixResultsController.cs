@@ -48,16 +48,17 @@ namespace BM_F1_WorkshopInventory.Controllers
 
         // POST: GrandPrixResults/Create
         [HttpPost("Create")]
-        public async Task<ActionResult<GrandPrixResult>> Create([Bind("Id,RaceDay,Location,PointsScored,PositionInTeamGrid")] GrandPrixResult grandPrixResult)
+        public async Task<ActionResult<GrandPrixResult>> Create([Bind("RaceDay,Location,PointsScored,PositionInTeamGrid")] GrandPrixResult grandPrixResult)
         {
+            ValidateTeamPositionAndPointsScrored(grandPrixResult);
             if (ModelState.IsValid)
             {
                 grandPrixResult.Id = Guid.NewGuid();
                 _context.Add(grandPrixResult);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Ok(grandPrixResult);
             }
-            return Ok(grandPrixResult);
+            return BadRequest(ModelState);
         }
 
         // PUT: api/GrandPrixResults/Edit/5
@@ -133,7 +134,7 @@ namespace BM_F1_WorkshopInventory.Controllers
             {
                 ModelState.AddModelError("validation", "Invalid team position!");
             }
-            if (res.PointsScored > MAX_POINTS || res.PointsScored <= 0)
+            if (res.PointsScored > MAX_POINTS || res.PointsScored < 0)
             {
                 ModelState.AddModelError("validation", "Invalid points added!");
             }
