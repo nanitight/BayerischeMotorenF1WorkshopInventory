@@ -2,7 +2,8 @@ import {z} from 'zod'
 
 export const grandPrixResultSchema = z.object({
     RaceDay: z.date()
-                .max(new Date(),"Race day cannot be in the futurre") , 
+                .max(new Date(),"Race day cannot be in the futurre") ,
+               // .transform((d)=> d.toISOString().split('T')[0]) , 
     Location: z.string()
                 .min(3,"Location name must be 3 or more characters") , 
     
