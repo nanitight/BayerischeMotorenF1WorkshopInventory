@@ -4,7 +4,8 @@ import { useAppContext } from '../Reusable/AppContext'
 
 interface ResultTableProps{
 result : DbTrackedGrandPrixResult, 
-deleteFunc : (id:string)=>Promise<void>
+deleteFunc : (id:string)=>Promise<void>,
+position: number
 }
 
 export default function  ResultsTable({
@@ -15,7 +16,7 @@ export default function  ResultsTable({
 
   return (
      <tr className="hover:bg-base-300">
-        <th>1</th>
+        <th></th>
         <td>{result.raceDay}</td>
         <td>{result.location}</td>
         <td>{result.pointsScored}</td>
