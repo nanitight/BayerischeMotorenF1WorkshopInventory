@@ -1,8 +1,8 @@
 import { type GrandPrixResultZod } from '../Interfaces/GrandPrixResultSchema'
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useAppContext } from './Reusable/AppContext';
 import { Navigate, useNavigate } from 'react-router-dom';
-import type { DbTrackedGrandPrixResult, GrandPrixResult } from '../Interfaces/GrandPrixResult';
+import type { GrandPrixResult } from '../Interfaces/GrandPrixResult';
 import GrandPrixResultForm from './Reusable/GrandPrixResultForm';
 
 
@@ -36,7 +36,7 @@ export default function EditGrandPrixResult() {
             }
         }
         catch(err){
-            if (err.response){
+            if ( err instanceof AxiosError && err.response){
                 if (err.response.status >= 400)
                 setErrorMsg("something went wrong... "+err.response.data) ;
                 console.log("error occ: ", err.response);

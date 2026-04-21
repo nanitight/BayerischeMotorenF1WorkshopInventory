@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {  type LoginUser } from '../Interfaces/UserSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppContext } from './Reusable/AppContext';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import { userRegisterSchema, type RegisterUser } from '../Interfaces/UserRegisterSchema';
 
@@ -27,7 +27,7 @@ export default function Register() {
             }
         }
         catch(err){
-            if (err.response){
+            if (err instanceof AxiosError && err.response){
                 setErrorMsg(err.response.data) ;
                 console.log("error occ: ", err.response.data);
                 console.log("error occ: ", err.response.status);
@@ -35,7 +35,7 @@ export default function Register() {
             }
             else{
 
-                console.log("error occ: ", err.message);
+                console.log("error occ: ", err);
             }
         }
     } 

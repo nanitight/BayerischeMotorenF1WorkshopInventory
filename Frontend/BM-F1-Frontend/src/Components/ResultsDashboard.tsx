@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import type { DbTrackedGrandPrixResult, GrandPrixResult } from '../Interfaces/GrandPrixResult'
-import axios from 'axios'
+import { useEffect, useState } from 'react'
+import type { DbTrackedGrandPrixResult } from '../Interfaces/GrandPrixResult'
+import axios, { AxiosError } from 'axios'
 import { useAppContext } from './Reusable/AppContext'
 import ResultsTable from './Render/ResultsTable';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ export default function ResultsDashboard() {
             console.log(resp) ;
         }
         catch(err){
-            if (err.response){
+            if (err instanceof AxiosError && err.response){
                 if (err.response.status >= 400)
                 setErrorMsg("something went wrong... "+err.response.data) ;
                 console.log("error occ: ", err.response);
@@ -56,7 +56,7 @@ export default function ResultsDashboard() {
             }
         }
         catch(err){
-            if (err.response){
+            if ( err instanceof AxiosError && err.response){
                 if (err.response.status == 403)
                     setErrorMsg("You are not Authorized for that action") ;
                 else if (err.response.status >= 400)
@@ -116,7 +116,7 @@ export default function ResultsDashboard() {
                     <tbody>            
                         {results.map((r : DbTrackedGrandPrixResult, ind : number)=> (
                             
-                            <ResultsTable key={ind} deleteFunc={deleteResult} result={r}/>
+                            <ResultsTable position={ind +1} key={ind} deleteFunc={deleteResult} result={r}/>
                         ))}
                     </tbody>
                 </table>

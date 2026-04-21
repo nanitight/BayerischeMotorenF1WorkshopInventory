@@ -9,14 +9,14 @@ position: number
 }
 
 export default function  ResultsTable({
-    result,deleteFunc
+    result,deleteFunc,position
 } : ResultTableProps) {
 
     const {setResultToEdit} = useAppContext()
 
   return (
      <tr className="hover:bg-base-300">
-        <th></th>
+        <th>{position}</th>
         <td>{result.raceDay}</td>
         <td>{result.location}</td>
         <td>{result.pointsScored}</td>
