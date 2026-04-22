@@ -11,5 +11,7 @@
         public double PointsScored { get; set; }
         
         public int PositionInTeamGrid { get; set; }
+
+        public User CreatedBy { get; set; } = null!;
     }
 }

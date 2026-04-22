@@ -52,7 +52,7 @@ namespace BM_F1_WorkshopInventory.Controllers
 
         // POST: GrandPrixResults/Create
         [HttpPost("Create")]
-        public async Task<ActionResult<GrandPrixResult>> Create([Bind("RaceDay,Location,PointsScored,PositionInTeamGrid")] GrandPrixResult grandPrixResult)
+        public async Task<ActionResult<GrandPrixResultDTO>> Create([Bind("RaceDay,Location,PointsScored,PositionInTeamGrid")] GrandPrixResult grandPrixResult)
         {
             ValidateTeamPositionAndPointsScrored(grandPrixResult);
             if (ModelState.IsValid)
@@ -62,13 +62,14 @@ namespace BM_F1_WorkshopInventory.Controllers
                 {
                     return Unauthorized("User ID claim is missing from token");
                 }   
-                UserInfoDTO? user = await userService.GetUser(idClaim.Value);
+                User? user = await userService.GetUser(idClaim.Value);
                 if (user == null)
                 {
                     return Unauthorized("User ID could not be verified");
                 }
-                var res = service.CreateResult(grandPrixResult);
-                return Ok(grandPrixResult);
+                grandPrixResult.CreatedBy = user;
+                var res = await service.CreateResult(grandPrixResult);
+                return Ok(new GrandPrixResultDTO(res));
             }
             return BadRequest(ModelState);
         }

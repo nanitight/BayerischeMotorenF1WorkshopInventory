@@ -14,14 +14,14 @@ namespace BM_F1_WorkshopInventory.Services
         {
             _context = context;
         }
-        public async Task<UserInfoDTO?> GetUser(string id)
+        public async Task<User?> GetUser(string id)
         {
             try
             {
                 Guid checkId = Guid.Parse(id);
                 User userDb = await _context.Users.FirstAsync<User>(e => e.Id == checkId);
                 if (userDb == null) return null;
-                return new UserInfoDTO(userDb.Id.ToString(), userDb.Username, userDb.Role);
+                return userDb;
             }
             catch
             {
