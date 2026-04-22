@@ -4,11 +4,13 @@ import { useAppContext } from './Reusable/AppContext';
 import { useNavigate } from 'react-router-dom';
 import type { GrandPrixResult } from '../Interfaces/GrandPrixResult';
 import GrandPrixResultForm from './Reusable/GrandPrixResultForm';
+import useApiRequester from './Reusable/ApiRequester';
 
 
 export default function AddGrandPrixResult() {
    
-    const {url,loggedInUser,loading,setLoading,setErrorMsg,} = useAppContext() ;
+    const {url,loggedInUser,setErrorMsg,} = useAppContext() ;
+    const {loading,setLoading,loadingScreen} = useApiRequester();
     const navigate = useNavigate() ;
 
     const onSubmitFunc = async (res: GrandPrixResultZod) =>{
@@ -19,7 +21,6 @@ export default function AddGrandPrixResult() {
             positionInTeamGrid: res.PositionInTeamGrid
         };
         
-
         console.log("posting...",res,dataToPost ) ;
         setLoading(true);
         try{
@@ -50,9 +51,8 @@ export default function AddGrandPrixResult() {
         }
     }
     
-      if (loading) return (<>
-            <span className="loading loading-infinity loading-xl"></span>
-        </>)
+    if (loading) return loadingScreen ;
+
 
   return (
     

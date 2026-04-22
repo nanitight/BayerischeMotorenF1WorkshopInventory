@@ -4,10 +4,12 @@ import axios, { AxiosError } from 'axios'
 import { useAppContext } from './Reusable/AppContext'
 import ResultsTable from './Render/ResultsTable';
 import { Link } from 'react-router-dom';
+import useApiRequester from './Reusable/ApiRequester';
 
 export default function ResultsDashboard() {
 
-    const {url,loggedInUser,setLoading,loading,errorMsg,setErrorMsg} = useAppContext() ;
+    const {url,loggedInUser,errorMsg,setErrorMsg} = useAppContext() ;
+    const {setLoading,loading,loadingScreen} = useApiRequester()
     const [results, setResults] = useState<DbTrackedGrandPrixResult[]>( [] as DbTrackedGrandPrixResult[])
     
     const fetchData = async ()=>{
@@ -78,9 +80,7 @@ export default function ResultsDashboard() {
     },[])
 
 
-    if (loading) return (<>
-            <span className="loading loading-infinity loading-xl"></span>
-        </>)
+    if (loading) return loadingScreen ;
 
   return (
     <div>

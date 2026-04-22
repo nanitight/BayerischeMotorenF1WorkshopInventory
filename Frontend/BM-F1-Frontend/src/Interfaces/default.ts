@@ -13,8 +13,6 @@ export interface AppContext{
     url : string ,
     loggedInUser : LoggedInUser,
     setLoggedInUser : (user: LoggedInUser) => void,
-    loading:boolean,
-    setLoading: (x:boolean)=>void,
     errorMsg:string,
     setErrorMsg:(m:string)=>void,
     resultToEdit: DbTrackedGrandPrixResult,

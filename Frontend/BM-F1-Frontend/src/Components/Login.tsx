@@ -6,9 +6,11 @@ import { useAppContext } from './Reusable/AppContext';
 import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import type { LoggedInUser } from '../Interfaces/default';
+import useApiRequester from './Reusable/ApiRequester';
 
 export default function Login() {
     const {url,setLoggedInUser} = useAppContext() ;
+    const {loading,setLoading,loadingScreen} = useApiRequester();
     const navigate = useNavigate()
     const {register,handleSubmit,formState : {errors}, } = useForm<LoginUser>({resolver: zodResolver(userSchema),});
     const [errorMsg, setErrorMsg] = useState("") ;
@@ -16,6 +18,7 @@ export default function Login() {
         console.log("user: ",user) ;
         console.log("fetching...") ;
         try{
+            setLoading(true) ;
             const resp = await axios.post(`${url}/api/auth/login`,user) ;
             console.log(resp) ;
             if (resp.data){
@@ -39,9 +42,12 @@ export default function Login() {
                 console.log("error occ: ", err);
             }
         }
+        finally{
+            setLoading(false);
+        }
     } 
 
-    
+    if (loading) return loadingScreen ;
 
   return (
     <div className='h-screen' style={{backgroundImage:"url(https://primotipo.com/wp-content/uploads/2015/04/image19.jpg)"}}>

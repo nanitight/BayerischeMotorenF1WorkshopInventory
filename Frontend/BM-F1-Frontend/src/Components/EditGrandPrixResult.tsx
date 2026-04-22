@@ -4,11 +4,13 @@ import { useAppContext } from './Reusable/AppContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import type { GrandPrixResult } from '../Interfaces/GrandPrixResult';
 import GrandPrixResultForm from './Reusable/GrandPrixResultForm';
+import useApiRequester from './Reusable/ApiRequester';
 
 
 export default function EditGrandPrixResult() {
    
-    const {url,loggedInUser,loading,setLoading,setErrorMsg,resultToEdit} = useAppContext() ;
+    const {url,loggedInUser,setErrorMsg,resultToEdit} = useAppContext() ;
+    const {loading,setLoading,loadingScreen} = useApiRequester() ;
     const navigate = useNavigate() ;
 
     const onSubmitEditFunc = async (res: GrandPrixResultZod) =>{
@@ -51,9 +53,8 @@ export default function EditGrandPrixResult() {
         }
     }
     
-      if (loading) return (<>
-            <span className="loading loading-infinity loading-xl"></span>
-        </>)
+    if (loading) return loadingScreen ;
+
 
     if (resultToEdit == null || resultToEdit.id == null  )
         return(

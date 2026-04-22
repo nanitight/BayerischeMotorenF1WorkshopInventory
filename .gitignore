@@ -54,3 +54,4 @@ TestResult.xml
 nunit-*.xml
 Backend/BM-F1-WorkshopInventory/.vs
 *.env
+Backend/BM-F1-WorkshopInventory/BM-F1-WorkshopInventory/out

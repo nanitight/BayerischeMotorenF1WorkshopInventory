@@ -2,6 +2,7 @@ using BM_F1_WorkshopInventory.Data;
 using BM_F1_WorkshopInventory.Interfaces;
 using BM_F1_WorkshopInventory.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -68,7 +69,10 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
     });
 });
-
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 
 var app = builder.Build();
