@@ -1,9 +1,10 @@
 ﻿using BM_F1_WorkshopInventory.Data;
 using BM_F1_WorkshopInventory.Interfaces;
 using BM_F1_WorkshopInventory.Models.Entities;
+using BM_F1_WorkshopInventory.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace BM_F1_WorkshopInventory.Models.Exceptions
+namespace BM_F1_WorkshopInventory.Services
 {
     public class GrandPrixResultServiceImpl : IGrandPrixResultService
     {
@@ -11,7 +12,7 @@ namespace BM_F1_WorkshopInventory.Models.Exceptions
 
         public GrandPrixResultServiceImpl(BMF1DbContext context)
         {
-            this._context = context;
+            _context = context;
         }
         public async Task<GrandPrixResult> CreateResult(GrandPrixResult newResult)
         {
@@ -38,7 +39,7 @@ namespace BM_F1_WorkshopInventory.Models.Exceptions
             {
                 var existing = await GetResult(id);
                 if (existing == null)
-                    throw new ResultNotFoundException("GrandPrix Result not found.");
+                    throw new NotFoundException("GrandPrix Result not found.");
 
                 existing.Location = editResult.Location;
                 existing.RaceDay = editResult.RaceDay;
@@ -53,7 +54,7 @@ namespace BM_F1_WorkshopInventory.Models.Exceptions
             {
                 if (GetResult(editResult.Id) == null)
                 {
-                    throw new ResultNotFoundException("Id not found please try again.");
+                    throw new NotFoundException("Id not found please try again.");
                 }
                 else
                 {

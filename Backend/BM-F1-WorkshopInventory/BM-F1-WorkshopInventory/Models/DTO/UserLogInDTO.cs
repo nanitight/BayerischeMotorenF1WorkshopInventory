@@ -1,16 +1,11 @@
 ﻿namespace BM_F1_WorkshopInventory.Models.DTO
 {
-    public class UserLogInDTO
+    public class UserLogInDTO : UserInfoDTO
     {
-        public string Username { get; set; }
-        public string Id { get; set; }
-        public string Role { get; set; }
+       
         public string Token { get; set; }
-        public UserLogInDTO(string id, string username,string role,string token)
+        public UserLogInDTO(string id, string username,string role,string token) : base(id,username,role)
         {
-            Username = username;
-            Id = id;
-            Role = role;
             Token = token;
         }
     }

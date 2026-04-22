@@ -76,6 +76,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IGrandPrixResultService, GrandPrixResultServiceImpl>();
+builder.Services.AddScoped<IUserService, UserserviceImpl>();
 
 var app = builder.Build();
 

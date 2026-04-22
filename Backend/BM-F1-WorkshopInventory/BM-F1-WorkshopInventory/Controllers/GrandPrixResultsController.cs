@@ -4,6 +4,8 @@ using BM_F1_WorkshopInventory.Data;
 using BM_F1_WorkshopInventory.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using BM_F1_WorkshopInventory.Interfaces;
+using System.Security.Claims;
+using BM_F1_WorkshopInventory.Models.DTO;
 
 namespace BM_F1_WorkshopInventory.Controllers
 {
@@ -15,10 +17,12 @@ namespace BM_F1_WorkshopInventory.Controllers
         private readonly double MAX_POINTS = 43.0;
         private readonly int MAX_TEAM_POS = 10;
         private readonly IGrandPrixResultService service;
+        private readonly IUserService userService;
 
-        public GrandPrixResultsController(IGrandPrixResultService service)
+        public GrandPrixResultsController(IGrandPrixResultService service, IUserService authService)
         {
             this.service = service;
+            this.userService = authService;
         }
 
         // GET: api/GrandPrixResults
@@ -53,6 +57,16 @@ namespace BM_F1_WorkshopInventory.Controllers
             ValidateTeamPositionAndPointsScrored(grandPrixResult);
             if (ModelState.IsValid)
             {
+                Claim? idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (idClaim == null)
+                {
+                    return Unauthorized("User ID claim is missing from token");
+                }   
+                UserInfoDTO? user = await userService.GetUser(idClaim.Value);
+                if (user == null)
+                {
+                    return Unauthorized("User ID could not be verified");
+                }
                 var res = service.CreateResult(grandPrixResult);
                 return Ok(grandPrixResult);
             }
