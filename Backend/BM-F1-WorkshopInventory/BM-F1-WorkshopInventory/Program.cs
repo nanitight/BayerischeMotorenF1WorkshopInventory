@@ -1,5 +1,6 @@
 using BM_F1_WorkshopInventory.Data;
 using BM_F1_WorkshopInventory.Interfaces;
+using BM_F1_WorkshopInventory.Models.Exceptions;
 using BM_F1_WorkshopInventory.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -74,6 +75,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
+builder.Services.AddScoped<IGrandPrixResultService, GrandPrixResultServiceImpl>();
 
 var app = builder.Build();
 

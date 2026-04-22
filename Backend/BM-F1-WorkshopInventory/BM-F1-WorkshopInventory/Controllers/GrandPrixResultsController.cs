@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BM_F1_WorkshopInventory.Data;
 using BM_F1_WorkshopInventory.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
+using BM_F1_WorkshopInventory.Interfaces;
 
 namespace BM_F1_WorkshopInventory.Controllers
 {
@@ -11,33 +12,32 @@ namespace BM_F1_WorkshopInventory.Controllers
     [ApiController]
     public class GrandPrixResultsController : ControllerBase
     {
-        private readonly BMF1DbContext _context;
         private readonly double MAX_POINTS = 43.0;
         private readonly int MAX_TEAM_POS = 10;
+        private readonly IGrandPrixResultService service;
 
-        public GrandPrixResultsController(BMF1DbContext context)
+        public GrandPrixResultsController(IGrandPrixResultService service)
         {
-            _context = context;
+            this.service = service;
         }
 
         // GET: api/GrandPrixResults
         [HttpGet]
         public async Task<ActionResult<List<GrandPrixResult>>> Index()
         {
-            return Ok(await _context.GrandPrixResult.ToListAsync());
+            return Ok(await service.GetResults());
         }
 
         // GET: api/GrandPrixResults/Details/5
         [HttpGet("Details/{id}")]
-        public async Task<ActionResult<GrandPrixResult>> Details(Guid? id)
+        public async Task<ActionResult<GrandPrixResult>> Details(Guid id)
         {
-            if (id == null)
+            if (id.Equals(Guid.Empty))
             {
                 return NotFound();
             }
 
-            var grandPrixResult = await _context.GrandPrixResult
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var grandPrixResult = await service.GetResult(id);
             if (grandPrixResult == null)
             {
                 return NotFound();
@@ -53,9 +53,7 @@ namespace BM_F1_WorkshopInventory.Controllers
             ValidateTeamPositionAndPointsScrored(grandPrixResult);
             if (ModelState.IsValid)
             {
-                grandPrixResult.Id = Guid.NewGuid();
-                _context.Add(grandPrixResult);
-                await _context.SaveChangesAsync();
+                var res = service.CreateResult(grandPrixResult);
                 return Ok(grandPrixResult);
             }
             return BadRequest(ModelState);
@@ -76,31 +74,14 @@ namespace BM_F1_WorkshopInventory.Controllers
             {
                 try
                 {
-                    var existing = await _context.GrandPrixResult.FirstOrDefaultAsync(g => g.Id == id);
-                    if (existing == null)
-                        return NotFound("GrandPrix Result not found.");
-
-                    existing.Location = grandPrixResult.Location;
-                    existing.RaceDay = grandPrixResult.RaceDay;
-                    existing.PositionInTeamGrid = grandPrixResult.PositionInTeamGrid;
-                    existing.PointsScored = grandPrixResult.PointsScored;
-
-                    _context.Update(existing);
-                    await _context.SaveChangesAsync();
-                    grandPrixResult = existing;
+                    Guid guid = id != null ? Guid.Parse(id.ToString()) : Guid.Empty;
+                    await service.EditResult(guid,grandPrixResult); 
+                    return Ok(grandPrixResult);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch(Exception e)
                 {
-                    if (!GrandPrixResultExists(grandPrixResult.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound(e.Message);
                 }
-                return Ok(grandPrixResult);
             }
             return BadRequest(ModelState);
         }
@@ -111,22 +92,15 @@ namespace BM_F1_WorkshopInventory.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var grandPrixResult = await _context.GrandPrixResult.FindAsync(id);
-            
-            if (grandPrixResult == null)
+            var deleted = await service.DeleteResult(id);
+            if (deleted == false)
             {
                 return NotFound("Grand Prix Result with id: " + id.ToString() + " not found!");
             }
-            _context.GrandPrixResult.Remove(grandPrixResult);
-
-            await _context.SaveChangesAsync();
             return Ok("success");
         }
 
-        private bool GrandPrixResultExists(Guid id)
-        {
-            return _context.GrandPrixResult.Any(e => e.Id == id);
-        }
+      
 
         private void ValidateTeamPositionAndPointsScrored(GrandPrixResult res)
         {
